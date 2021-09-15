@@ -1,0 +1,17 @@
+apiVersion: management.k4e.io/v1alpha1
+kind: EdgeDeployment
+metadata:
+  name: random-deployment
+spec:
+  deviceSelector:
+    matchLabels:
+      dc: home
+  type: pod
+  pod:
+    spec:
+      containers:
+        - name: random-server
+          image: quay.io/jdzon/random-server:v1
+          ports:
+            - containerPort: 8080
+              hostPort: 9090
