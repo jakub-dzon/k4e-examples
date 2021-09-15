@@ -1,0 +1,20 @@
+apiVersion: management.k4e.io/v1alpha1
+kind: EdgeDeployment
+metadata:
+  name: os-stats
+spec:
+  deviceSelector:
+    matchLabels:
+      dc: home
+  data:
+    paths:
+      - source: stats
+        target: statistics
+  type: pod
+  pod:
+    spec:
+      containers:
+        - name: stats-collector
+          image: quay.io/jdzon/os-stats:v1
+
+
