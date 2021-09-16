@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: metrics-producer
+  labels:
+    app: metrics-producer
+spec:
+  selector:
+    matchLabels:
+      app: metrics-producer
+  podMetricsEndpoints:
+    - port: "metrics"

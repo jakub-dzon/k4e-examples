@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: metrics-producer-@DEVICE_ID@
+  labels:
+    app: metrics-producer
+spec:
+  volumes:
+    - name: meminfo
+      hostPath:
+        path: /proc/meminfo
+        type: File
+  containers:
+    - name: metrics-producer
+      image: quay.io/jdzon/metrics-producer:v1
+      ports:
+          - name: metrics
+            containerPort: 8081
+      env:
+        - name: DEVICE
+          value: @DEVICE_ID@
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: @DEVICE_ID@
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: @DEVICE_ID@
+              key: AWS_SECRET_ACCESS_KEY
+        - name: BUCKET_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: @DEVICE_ID@
+              key: BUCKET_HOST
+        - name: BUCKET_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: @DEVICE_ID@
+              key: BUCKET_NAME
