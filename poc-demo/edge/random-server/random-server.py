@@ -2,14 +2,16 @@ import secrets
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+from cpu_load_generator import load_all_cores
+
 
 class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         parts = str.split(self.path, '/')
 
+        n = int(parts[2])
         if parts[1] == "random":
-            n = int(parts[2])
             content = ""
             for i in range(n):
                 generated = secrets.randbelow(sys.maxsize)
@@ -22,7 +24,11 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
             self.wfile.write(content.encode("ascii"))
-
+        elif parts[1] == "load":
+            load_all_cores(n, 0.25)
+            self.send_response(200)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
         else:
             self.send_error(404)
 
