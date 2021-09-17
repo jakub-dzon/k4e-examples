@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: prepare-manifests
+spec:
+  workspaces:
+  - name: source
+  params:
+    - name: manifest_dir
+      description: The directory in source that contains yaml manifests
+      type: string
+      default: "k8s"
+    - name: IMAGE
+      description: Location of image to be patched with
+      type: string
+  steps:
+    - name: prepare
+      image: quay.io/openshift/origin-cli:latest
+      workingDir: /workspace/source
+      command: ["/bin/bash", "-c"]
+      args:
+        - |-
+          echo Preparing manifests in $(inputs.params.manifest_dir) directory
+          set +x
+          sed -i "s#image: .*#image: $(inputs.params.IMAGE)#g" $(inputs.params.manifest_dir)/*
+          cat $(inputs.params.manifest_dir)/*
+          echo -----------------------------------

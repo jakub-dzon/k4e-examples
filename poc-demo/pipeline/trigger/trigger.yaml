@@ -1,0 +1,20 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: example-trigger
+spec:
+  serviceAccountName: pipeline
+  interceptors:
+    - ref:
+        name: "gitlab"
+      params:
+        - name: "secretRef"
+          value:
+            secretName: gitsecret
+            secretKey: secretToken
+        - name: "eventTypes"
+          value: ["Push Hook"]
+  bindings:
+    - ref: example
+  template:
+    ref: example

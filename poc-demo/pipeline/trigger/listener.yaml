@@ -1,0 +1,8 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: example
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - triggerRef: example-trigger
