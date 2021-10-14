@@ -6,8 +6,7 @@ import psutil
 
 stats_dir = "/export/stats"
 
-if not os.path.exists(stats_dir):
-    os.mkdir(stats_dir)
+os.makedirs(stats_dir)
 
 while True:
     file_name = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
