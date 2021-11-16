@@ -4,7 +4,9 @@ from datetime import datetime
 
 import psutil
 
-stats_dir = "/export/stats"
+device_id = os.getenv("DEVICE_ID")
+
+stats_dir = "/export/stats/" + device_id
 
 os.makedirs(stats_dir)
 
